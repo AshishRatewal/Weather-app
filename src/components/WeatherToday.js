@@ -20,8 +20,8 @@ const WeatherToday = () => {
     ],
   };
   const [apiData, setApiData] = useState(blankObj);
-  const callingApi = () => {
-    axios
+  const callingApi = async () => {
+    await axios
       .get(
         `http://api.openweathermap.org/data/2.5/forecast?q=chhachhrauli&appid=${APIkey}`
       )
