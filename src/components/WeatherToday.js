@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 const WeatherToday = () => {
-  const [searchCity, setSearchCity] = useState();
-  const [input, setInput] = useState("chhachhrauli");
+  const [searchCity, setSearchCity] = useState('chhachhrauli');
   const APIkey = "69ea186130e1fec118fcc795ac180f7e";
   const blankObj = {
     city: {
@@ -54,8 +53,8 @@ const WeatherToday = () => {
       });
   };
   useEffect(() => {
-    callingApi(input);
-  }, [input]);
+    callingApi(searchCity);
+  }, [searchCity]);
 
   const { city } = apiData && apiData;
   const { name } = city;
@@ -72,33 +71,17 @@ const WeatherToday = () => {
     setSearchCity(value);
   };
 
-  const cityWeather = () => {
-    setInput(searchCity);
-    alert("Search data");
-  };
-
   return (
     <>
       <div className="container p-0 mb-4 text-light">
         <div class="row g-3">
-          <div class="col-9">
+          <div class="col-12">
             <input
               type="search"
               class="form-control"
               placeholder="Search..."
               onChange={getSearchCity}
             />
-          </div>
-          <div className="col-3">
-            <div class="d-grid gap-2">
-              <button
-                class="btn btn-primary"
-                type="button"
-                onClick={cityWeather}
-              >
-                Search
-              </button>
-            </div>
           </div>
         </div>
       </div>
