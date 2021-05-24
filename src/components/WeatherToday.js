@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 const WeatherToday = () => {
+  const [searchCity, setSearchCity] = useState();
+  const [input, setInput] = useState("chhachhrauli");
   const APIkey = "69ea186130e1fec118fcc795ac180f7e";
   const blankObj = {
     city: {
@@ -19,11 +21,28 @@ const WeatherToday = () => {
       },
     ],
   };
+  const errorObj = {
+    city: {
+      name: "not found!",
+    },
+    list: [
+      {
+        main: {
+          feels_like: "",
+          temp: "",
+          temp_max: "",
+          temp_min: "",
+          humidity: "",
+          pressure: "",
+        },
+      },
+    ],
+  };
   const [apiData, setApiData] = useState(blankObj);
-  const callingApi = async () => {
+  const callingApi = async (searchedValue) => {
     await axios
       .get(
-        `http://api.openweathermap.org/data/2.5/forecast?q=chhachhrauli&appid=${APIkey}`
+        `http://api.openweathermap.org/data/2.5/forecast?q=${searchedValue}&appid=${APIkey}`
       )
       .then((res) => {
         console.log("Response", res.data);
@@ -31,30 +50,54 @@ const WeatherToday = () => {
       })
       .catch((err) => {
         console.log("Error =>", err);
-        setApiData("");
+        setApiData(errorObj);
       });
   };
   useEffect(() => {
-    callingApi();
-  }, []);
+    callingApi(input);
+  }, [input]);
 
   const { city } = apiData && apiData;
   const { name } = city;
   const { list } = apiData && apiData;
   const { main } = list[0];
   const { feels_like, temp, temp_max, temp_min, humidity, pressure } = main;
-  // 274.150 = 1 c
   const tempCelcius = (temp == "" ? 0 : temp - 274.15).toFixed(2);
   const feelsLike = (feels_like == "" ? 0 : feels_like - 274.15).toFixed(2);
   const tempHigh = (temp_max == "" ? 0 : temp_max - 274.15).toFixed(2);
   const lowTemp = (temp_min == "" ? 0 : temp_min - 274.15).toFixed(2);
 
+  const getSearchCity = (e) => {
+    const { value } = e.target;
+    setSearchCity(value);
+  };
+
+  const cityWeather = () => {
+    setInput(searchCity);
+  };
+
   return (
     <>
       <div className="container p-0 mb-4 text-light">
         <div class="row g-3">
-          <div class="col-12">
-            <input type="search" class="form-control" placeholder="Search..." />
+          <div class="col-9">
+            <input
+              type="search"
+              class="form-control"
+              placeholder="Search..."
+              onChange={getSearchCity}
+            />
+          </div>
+          <div className="col-3">
+            <div class="d-grid gap-2">
+              <button
+                class="btn btn-primary"
+                type="button"
+                onClick={cityWeather}
+              >
+                Search
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -69,7 +112,9 @@ const WeatherToday = () => {
             <div className="col-md-6">
               <div className="row">
                 <div className="col-12">
-                  <p>{name == "" ? "loading..." : name}</p>
+                  <p className="fw-bolder">
+                    {name == "" ? "loading..." : name}
+                  </p>
                 </div>
               </div>
               <div className="row">
@@ -84,7 +129,9 @@ const WeatherToday = () => {
               </div>
             </div>
             <div className="col-md-6">
-              <p>Fell like {feelsLike} deg</p>
+              <p>
+                Fell like <span className="fw-bolder">{feelsLike}</span> deg
+              </p>
               <div className="row">
                 <div className="col-6">HUmidity</div>
                 <div className="col-6">{humidity}%</div>
@@ -105,7 +152,6 @@ const WeatherToday = () => {
           </div>
         </div>
       </div>
-      {/* second card */}
       <div class="card bg-light text-center">
         <div class="card-body">
           <div className="row">
