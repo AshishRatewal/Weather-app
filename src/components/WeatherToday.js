@@ -23,7 +23,7 @@ const WeatherToday = () => {
   const callingApi = () => {
     axios
       .get(
-        `http://api.openweathermap.org/data/2.5/forecast?q=karnal&appid=${APIkey}`
+        `http://api.openweathermap.org/data/2.5/forecast?q=chhachhrauli&appid=${APIkey}`
       )
       .then((res) => {
         console.log("Response", res.data);
@@ -39,7 +39,7 @@ const WeatherToday = () => {
   }, []);
 
   const { city } = apiData && apiData;
-  const { name } = city && city;
+  const { name } = city;
   const { list } = apiData && apiData;
   const { main } = list[0];
   const { feels_like, temp, temp_max, temp_min, humidity, pressure } = main;
