@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 const WeatherToday = () => {
-  const [searchCity, setSearchCity] = useState('chhachhrauli');
+  const [searchCity, setSearchCity] = useState("chhachhrauli");
   const APIkey = "69ea186130e1fec118fcc795ac180f7e";
   const blankObj = {
     city: {
@@ -17,6 +17,11 @@ const WeatherToday = () => {
           humidity: "",
           pressure: "",
         },
+        weather: [
+          {
+            icon: "",
+          },
+        ],
       },
     ],
   };
@@ -34,10 +39,16 @@ const WeatherToday = () => {
           humidity: "",
           pressure: "",
         },
+        weather: [
+          {
+            icon: "",
+          },
+        ],
       },
     ],
   };
   const [apiData, setApiData] = useState(blankObj);
+
   const callingApi = async (searchedValue) => {
     await axios
       .get(
@@ -60,6 +71,8 @@ const WeatherToday = () => {
   const { name } = city;
   const { list } = apiData && apiData;
   const { main } = list[0];
+  const { weather } = list[0];
+  const { icon } = weather[0];
   const { feels_like, temp, temp_max, temp_min, humidity, pressure } = main;
   const tempCelcius = (temp == "" ? 0 : temp - 274.15).toFixed(2);
   const feelsLike = (feels_like == "" ? 0 : feels_like - 274.15).toFixed(2);
@@ -103,9 +116,12 @@ const WeatherToday = () => {
               </div>
               <div className="row">
                 <div className="col-6">
-                  <h1>
-                    <i className="wi wi-day-sunny display-4"></i>
-                  </h1>
+                  <p>
+                    <img
+                      src={`http://openweathermap.org/img/wn/${icon}@2x.png`}
+                      alt="weather image"
+                    />
+                  </p>
                 </div>
                 <div className="col-6">
                   <h1>{tempCelcius} deg</h1>
