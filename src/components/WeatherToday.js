@@ -74,6 +74,7 @@ const WeatherToday = () => {
 
   const cityWeather = () => {
     setInput(searchCity);
+    alert("Search data");
   };
 
   return (
